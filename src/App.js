@@ -5,6 +5,10 @@ import { CubeCamera, Environment, OrbitControls, PerspectiveCamera } from "@reac
 import { Ground } from './Ground';
 import { Car } from './Car';
 import { Rings } from './Rings';
+import { Boxes } from './Boxes';
+import { FloadingGrid } from './FloadingGrid';
+import { Bloom, ChromaticAberration, DepthOfField, EffectComposer } from '@react-three/postprocessing';
+import { BlendFunction } from 'postprocessing';
 
 function CarShow() {
   return (
@@ -28,6 +32,10 @@ function CarShow() {
 
       {/* Set up ring leon */}
       <Rings />
+      {/* Set up Boxes leon */}
+      <Boxes />
+      {/* Set up Floading Grid */}
+      <FloadingGrid />
       {/* Set up light (spotlight) in scene */}
       <spotLight
         color={[1, 0.25, 0.7]}
@@ -49,6 +57,24 @@ function CarShow() {
       />
 
       <Ground />
+
+      <EffectComposer>
+        {/* <DepthOfField focusDistance={0.0035} 
+        focalLength={0.01} bokehScale={3} height={480}/> */}
+        <Bloom
+          blendFunction={BlendFunction.ADD}
+          intensity={1.3} // The bloom intensity
+          width={300} // render width
+          height={300} // render height
+          kernelSize={5} // blur kernel size
+          luminanceThreshold={0.15} // Raise this element to mask out the darker elements in the scene.
+          luminanceSmoothing={0.025}
+        />
+        <ChromaticAberration
+          blendFunction={BlendFunction.NORMAL}
+          offset={[0.0005, 0.0012]}
+        />
+      </EffectComposer>
     </>
   );
 }

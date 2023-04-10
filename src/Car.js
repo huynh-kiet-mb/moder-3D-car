@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useLoader } from '@react-three/fiber';
+import { useLoader, useFrame } from '@react-three/fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { Mesh } from 'three';
 
@@ -21,6 +21,17 @@ export function Car() {
             }
         });
     }, [gltf]);
+
+    // This use to set up spinning wheels
+    useFrame((state, delta)=> {
+        let t = -state.clock.getElapsedTime();
+
+        let ground = gltf.scene.children[0].children[0].children[0];
+        ground.children[0].rotation.x = t * 2;
+        ground.children[2].rotation.x = t * 2;
+        ground.children[3].rotation.x = t * 2;
+        ground.children[6].rotation.x = t * 2;
+    })
 
     return <primitive object={gltf.scene} />
 }
